@@ -49,7 +49,12 @@ export const loginUser = async (req: Request, res: Response) => {
     try {
         const user = await User.findOne({ email });
 
+        console.log({user ,password});
+        
+
         if (user && (await bcrypt.compare(password, user.password))) {
+            console.log({password});
+            
             res.json({
                 _id: user._id,
                 name: user.name,
@@ -57,14 +62,17 @@ export const loginUser = async (req: Request, res: Response) => {
                 phone: user.phone,
                 isVerifiedEmail: user.isVerifiedEmail,
                 isVerifiedPhone: user.isVerifiedPhone,
-                token: jwt.sign({ userId: user._id, name: user.name }, process.env.JWT_SECRET!, {
+                token: jwt.sign({ userId: user._id, name: user.name }, "secretkey", {
                     expiresIn: '30d',
                 }),
             });
         } else {
             res.status(401).json({ message: 'Invalid email or password' });
         }
+
     } catch (error) {
+        console.log({error});
+        
         res.status(500).json({ message: 'Server error', error });
     }
 };
