@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import User from '../models/userModel';
 import bcrypt from 'bcryptjs';
 // import generateToken from '../utils/generateToken';
+import jwt from 'jsonwebtoken';
+
 
 export const registerUser = async (req: Request, res: Response) => {
     const { name, email, phone, password } = req.body;
@@ -44,23 +46,25 @@ export const registerUser = async (req: Request, res: Response) => {
 export const loginUser = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
-    // try {
-    //     const user = await User.findOne({ email });
+    try {
+        const user = await User.findOne({ email });
 
-    //     if (user && (await bcrypt.compare(password, user.password))) {
-    //         res.json({
-    //             _id: user._id,
-    //             name: user.name,
-    //             email: user.email,
-    //             phone: user.phone,
-    //             isVerifiedEmail: user.isVerifiedEmail,
-    //             isVerifiedPhone: user.isVerifiedPhone,
-    //             token: generateToken(user._id),
-    //         });
-    //     } else {
-    //         res.status(401).json({ message: 'Invalid email or password' });
-    //     }
-    // } catch (error) {
-    //     res.status(500).json({ message: 'Server error', error });
-    // }
+        if (user && (await bcrypt.compare(password, user.password))) {
+            res.json({
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                phone: user.phone,
+                isVerifiedEmail: user.isVerifiedEmail,
+                isVerifiedPhone: user.isVerifiedPhone,
+                token: jwt.sign({ userId: user._id, name: user.name }, process.env.JWT_SECRET!, {
+                    expiresIn: '30d',
+                }),
+            });
+        } else {
+            res.status(401).json({ message: 'Invalid email or password' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error });
+    }
 };
