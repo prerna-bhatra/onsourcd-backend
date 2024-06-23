@@ -2,12 +2,13 @@ import { Request, Response } from 'express';
 import UserAddress from '../models/userAddressModel';
 
 export const addUserAddress = async (req: Request, res: Response) => {
-    const { userId, coordinates, city, state, zipcode, address, landmark } = req.body;
+    const { userId, latitude , longitude, city, state, zipcode, address, landmark } = req.body;
 
     try {
         const userAddress = new UserAddress({
             userId,
-            coordinates,
+            latitude,
+            longitude,
             city,
             state,
             zipcode,
@@ -23,6 +24,18 @@ export const addUserAddress = async (req: Request, res: Response) => {
     }
 };
 
+
+export const getUserAddressByUserId = async (req: Request, res: Response) => {
+    const { userId } = req.query;
+
+    try {
+       const addresses = await UserAddress.find({userId})
+
+        res.status(201).json(addresses);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error });
+    }
+};
 
 
 

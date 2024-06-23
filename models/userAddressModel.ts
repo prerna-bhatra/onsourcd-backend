@@ -2,10 +2,8 @@ import { Schema, model, Document, Types } from 'mongoose';
 
 interface IUserAddress extends Document {
     userId: Types.ObjectId;
-    coordinates: {
         latitude: number;
         longitude: number;
-    };
     city: string;
     state: string;
     zipcode: string;
@@ -15,10 +13,8 @@ interface IUserAddress extends Document {
 
 const userAddressSchema = new Schema<IUserAddress>({
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    coordinates: {
-        latitude: { type: Number, required: true },
-        longitude: { type: Number, required: true }
-    },
+    latitude:{type: Number, required: true },
+    longitude: { type: Number, required: true },
     city: { type: String, required: true },
     state: { type: String, required: true },
     zipcode: { type: String, required: true },
