@@ -32,6 +32,7 @@ export const registerUser = async (req: Request, res: Response) => {
                 name: user.name,
                 email: user.email,
                 phone: user.phone,
+                userType:user.userType
                 // isVerifiedEmail: user.isVerifiedEmail,
                 // isVerifiedPhone: user.isVerifiedPhone,
                 // token: generateToken(user._id),
