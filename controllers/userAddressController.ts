@@ -29,16 +29,16 @@ export const getUserAddressByUserId = async (req: Request, res: Response) => {
     const { userId } = req.query;
 
     try {
-        const addresses = await UserAddress.find({ userId })
+        // Make sure the userId is being correctly passed as a query parameter
+        const addresses = await UserAddress.find({ userId });
 
-        if (addresses) {
-            res.status(201).json([]);
+        console.log({addresses})
+
+        if (addresses.length > 0) {
+            res.status(200).json(addresses); // Return addresses when found
+        } else {
+            res.status(404).json({ message: 'No addresses found' }); // Return message when no addresses are found
         }
-        else {
-            res.status(201).json(addresses);
-
-        }
-
     } catch (error) {
         res.status(500).json({ message: 'Server error', error });
     }
