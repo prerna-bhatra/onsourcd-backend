@@ -114,7 +114,7 @@ export const fetchSubCategoriesByCategoryId = async (req: Request, res: Response
 export const addProduct = async (req: Request, res: Response) => {
 
     try {
-        let form=new formidable.IncomingForm()
+        let form = new formidable.IncomingForm()
         form.parse(req, async (err: any, fields: any, files: any) => {
 
             if (err) {
@@ -162,7 +162,8 @@ export const addProduct = async (req: Request, res: Response) => {
 
 export const getProducts = async (req: Request, res: Response) => {
     try {
-        const products = await Product.find();
+        const products = await Product.find().populate('category', 'name')  // Populating category name
+            .populate('subCategory');  // Populating subCategory name
 
         res.status(200).json({
             message: 'Product Saved',
