@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import userRoutes from './routes/userRoutes';
 import userAddressRoutes from './routes/userAddressRoutes';
+import productRoutes from './routes/productRoutes';
 
 import cors from 'cors';
 
@@ -17,6 +18,7 @@ app.use(cors());
 
 app.use('/api/users', userRoutes);
 app.use('/api/address', userAddressRoutes);
+app.use('/api/products', productRoutes);
 
 
 mongoose.connect("mongodb+srv://alok1993:cV7GOXVnzuYmrEWf@cluster0.kzdim.mongodb.net/onsourcd", {})
