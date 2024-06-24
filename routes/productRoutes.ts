@@ -1,5 +1,6 @@
 import express from 'express';
 import { registerCategory, fetchCategories, registerSubCategory, addProduct, getProducts } from '../controllers/productController';
+import { verifyTokenMiddleware } from '../middlewares/authMiddleware';
 
 const router = express.Router();
 

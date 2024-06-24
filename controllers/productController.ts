@@ -121,9 +121,6 @@ export const addProduct = async (req: Request, res: Response) => {
                 });
             }
 
-            console.log({ fields });
-
-
             const name = fields.name[0];
             const category = fields.categoryId[0];
             const subCategory = fields.subcategoryId[0];

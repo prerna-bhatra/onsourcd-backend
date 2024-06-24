@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 import userRoutes from './routes/userRoutes';
 import userAddressRoutes from './routes/userAddressRoutes';
 import productRoutes from './routes/productRoutes';
+import requirmentRoutes from './routes/requirmentRoutes';
+
 
 import cors from 'cors';
 
@@ -19,6 +21,8 @@ app.use(cors());
 app.use('/api/users', userRoutes);
 app.use('/api/address', userAddressRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/requirments', requirmentRoutes);
+
 
 
 mongoose.connect("mongodb+srv://alok1993:cV7GOXVnzuYmrEWf@cluster0.kzdim.mongodb.net/onsourcd", {})
