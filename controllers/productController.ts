@@ -60,10 +60,10 @@ export const fetchCategories = async (req: Request, res: Response) => {
 
 
 export const registerSubCategory = async (req: Request, res: Response) => {
-    const { name, categoryId } = req.body;
+    const { name, category } = req.body;
 
     try {
-        const subCategoryExists = await Category.findOne({ name, category: categoryId });
+        const subCategoryExists = await SubCategory.findOne({ name, category: category });
 
         if (subCategoryExists) {
             return res.status(400).json({ message: 'Sub category  can not be created duplicate' });
@@ -71,7 +71,7 @@ export const registerSubCategory = async (req: Request, res: Response) => {
 
         const newSubCategory = new SubCategory({
             name,
-            category: categoryId
+            category: category
         })
 
         const saveNewSubcategory = await newSubCategory.save();
@@ -91,10 +91,10 @@ export const registerSubCategory = async (req: Request, res: Response) => {
 };
 
 export const fetchSubCategoriesByCategoryId = async (req: Request, res: Response) => {
-    const { categoryId } = req.body;
+    const { category } = req.query;
 
     try {
-        const subCategories = await Category.find({ category: categoryId });
+        const subCategories = await SubCategory.find({ category: category });
 
         if (subCategories) {
             res.status(201).json({
@@ -112,9 +112,11 @@ export const fetchSubCategoriesByCategoryId = async (req: Request, res: Response
 
 
 export const addProduct = async (req: Request, res: Response) => {
+
     try {
-        const form = new formidable.IncomingForm();
+        let form=new formidable.IncomingForm()
         form.parse(req, async (err: any, fields: any, files: any) => {
+
             if (err) {
                 return res.status(400).json({
                     error: 'Image could not be uploaded'
@@ -129,7 +131,6 @@ export const addProduct = async (req: Request, res: Response) => {
 
             if (files.document) {
                 const fileLocation = await uploadFileToS3(files.document[0]);
-                console.log({ fileLocation });
                 if (fileLocation) {
 
                     const newProduct = new Product({
