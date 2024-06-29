@@ -71,7 +71,7 @@ export const requirementByUserId = async (req: any, res: Response) => {
 
 // only admin can access it
 export const getRequirements = async (req: Request, res: Response) => {
-    const { page = 1, limit = 10 } = req.query;
+    const { page = 1, limit = 100 } = req.query;
     
     try {
         const result = await paginate(Requirement, { page: +page, limit: +limit });

@@ -38,7 +38,7 @@ export const fetchCategories = async (req: Request, res: Response) => {
     const { name } = req.body;
 
     try {
-        const categoryExists = await Category.findOne({ name });
+        const categoryExists = await Category.findOne({ name }).populate('subcategories');;
 
         if (categoryExists) {
             return res.status(400).json({ message: 'Category already exists' });
