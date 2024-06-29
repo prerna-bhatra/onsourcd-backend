@@ -3,10 +3,11 @@ import User from '../models/userModel';
 import bcrypt from 'bcryptjs';
 // import generateToken from '../utils/generateToken';
 import jwt from 'jsonwebtoken';
+import { sendVerificationEmail } from '../utills/emailService';
 
 
 export const registerUser = async (req: Request, res: Response) => {
-    const { name, email, phone, password , userType } = req.body;
+    const { name, email, phone, password, userType } = req.body;
 
     try {
         const userExists = await User.findOne({ email });
@@ -32,7 +33,7 @@ export const registerUser = async (req: Request, res: Response) => {
                 name: user.name,
                 email: user.email,
                 phone: user.phone,
-                userType:user.userType
+                userType: user.userType
                 // isVerifiedEmail: user.isVerifiedEmail,
                 // isVerifiedPhone: user.isVerifiedPhone,
                 // token: generateToken(user._id),
@@ -51,12 +52,12 @@ export const loginUser = async (req: Request, res: Response) => {
     try {
         const user = await User.findOne({ email });
 
-        console.log({user ,password});
-        
+        console.log({ user, password });
+
 
         if (user && (await bcrypt.compare(password, user.password))) {
-            console.log({password});
-            
+            console.log({ password });
+
             res.json({
                 _id: user._id,
                 name: user.name,
@@ -64,7 +65,7 @@ export const loginUser = async (req: Request, res: Response) => {
                 phone: user.phone,
                 isVerifiedEmail: user.isVerifiedEmail,
                 isVerifiedPhone: user.isVerifiedPhone,
-                userType:user.userType,
+                userType: user.userType,
                 token: jwt.sign({ userId: user._id, name: user.name }, "secretkey", {
                     expiresIn: '30d',
                 }),
@@ -74,8 +75,22 @@ export const loginUser = async (req: Request, res: Response) => {
         }
 
     } catch (error) {
-        console.log({error});
-        
+        console.log({ error });
+
         res.status(500).json({ message: 'Server error', error });
     }
 };
+
+export const verifyUserEmail = async (req: any, res: Response) => {
+    try {
+
+        const { userId, token } = req;
+
+        const user: any = await User.findOne({ _id: userId })
+
+        await sendVerificationEmail(token, user?.email)
+
+    } catch (error) {
+        throw error
+    }
+}

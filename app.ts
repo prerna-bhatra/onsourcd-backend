@@ -10,6 +10,7 @@ import quotationRoutes from './routes/quotationRoutes';
 
 
 import cors from 'cors';
+import { sendVerificationEmail } from './utills/emailService';
 
 
 dotenv.config();
@@ -25,6 +26,10 @@ app.use('/api/address', userAddressRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/requirments', requirmentRoutes);
 app.use('/api/quotation', quotationRoutes);
+
+
+
+// sendVerificationEmail("","")
 
 mongoose.connect("mongodb+srv://alok1993:cV7GOXVnzuYmrEWf@cluster0.kzdim.mongodb.net/onsourcd", {})
     .then(() => {
