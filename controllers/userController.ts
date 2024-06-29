@@ -81,7 +81,7 @@ export const loginUser = async (req: Request, res: Response) => {
     }
 };
 
-export const verifyUserEmail = async (req: any, res: Response) => {
+export const sendVerifyUserEmail = async (req: any, res: Response) => {
     try {
 
         const { userId, token } = req;
@@ -89,6 +89,26 @@ export const verifyUserEmail = async (req: any, res: Response) => {
         const user: any = await User.findOne({ _id: userId })
 
         await sendVerificationEmail(token, user?.email)
+
+    } catch (error) {
+        throw error
+    }
+}
+
+export const verifyUserEmail = async (req: any, res: Response) => {
+    try {
+
+        const { userId } = req;
+        const verifyEmail = await User.findByIdAndUpdate(userId, { isVerifiedEmail: true }, { new: true });
+
+        if (verifyEmail) {
+            res.status(200).json({ message: 'Verified Succefully' });
+
+        }
+        else {
+            res.status(500).json({ message: 'Server error' });
+
+        }
 
     } catch (error) {
         throw error
