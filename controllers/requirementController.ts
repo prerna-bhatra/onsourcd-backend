@@ -16,7 +16,8 @@ export const registerRequirement = async (req: any, res: Response) => {
         expectedEndDate,
         description,
         deliveryAddress,
-        deliveryCoordinates,
+        latitude,
+        longitude,
         deliveryCity,
         deliveryState,
         deliveryZipCode
@@ -36,7 +37,8 @@ export const registerRequirement = async (req: any, res: Response) => {
             expectedEndDate,
             description,
             deliveryAddress,
-            deliveryCoordinates,
+            latitude,
+            longitude,
             deliveryCity,
             deliveryState,
             deliveryZipCode

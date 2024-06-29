@@ -21,10 +21,8 @@ interface Requirement extends Document {
     expectedEndDate?: Date;
     description: string;
     deliveryAddress: string;
-    deliveryCoordinates: {
-        latitude: number;
-        longitude: number;
-    };
+    latitude: number;
+    longitude: number;
     deliveryCity: string;
     deliveryState: string;
     deliveryZipCode: string;
@@ -45,10 +43,8 @@ const RequirementSchema: Schema = new Schema({
     expectedEndDate: { type: Date },
     description: { type: String, required: true },
     deliveryAddress: { type: String, required: true },
-    deliveryCoordinates: {
-        latitude: { type: Number, required: true },
-        longitude: { type: Number, required: true }
-    },
+    latitude: { type: Number, required: true },
+    longitude: { type: Number, required: true },
     deliveryCity: { type: String, required: true },
     deliveryState: { type: String, required: true },
     deliveryZipCode: { type: String, required: true }
