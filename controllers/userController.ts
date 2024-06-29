@@ -88,7 +88,14 @@ export const sendVerifyUserEmail = async (req: any, res: Response) => {
 
         const user: any = await User.findOne({ _id: userId })
 
-        await sendVerificationEmail(token, user?.email)
+        const sendEmail = await sendVerificationEmail(token, user?.email)
+        if (sendEmail) {
+            res.status(200).json({ message: 'Email sent succefully' });
+        }
+        else {
+            res.status(500).json({ message: 'Email sent failed' });
+
+        }
 
     } catch (error) {
         throw error
