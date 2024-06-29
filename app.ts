@@ -5,6 +5,8 @@ import userRoutes from './routes/userRoutes';
 import userAddressRoutes from './routes/userAddressRoutes';
 import productRoutes from './routes/productRoutes';
 import requirmentRoutes from './routes/requirmentRoutes';
+import quotationRoutes from './routes/quotationRoutes';
+
 
 
 import cors from 'cors';
@@ -22,8 +24,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/address', userAddressRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/requirments', requirmentRoutes);
-
-
+app.use('/api/quotation', quotationRoutes);
 
 mongoose.connect("mongodb+srv://alok1993:cV7GOXVnzuYmrEWf@cluster0.kzdim.mongodb.net/onsourcd", {})
     .then(() => {
