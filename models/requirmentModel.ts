@@ -32,7 +32,7 @@ const FrequencyEnum = ['Daily', 'Weekly', 'Monthly', 'One-time'];
 
 const RequirementSchema: Schema = new Schema({
     buyerId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    productId: { type: Schema.Types.ObjectId, required: true },
+    productId: { type: Schema.Types.ObjectId, ref:'Product',required: true },
     quantity: { type: Number, required: true },
     minimumAmount: { type: Number, required: true },
     maximumAmount: { type: Number, required: true },

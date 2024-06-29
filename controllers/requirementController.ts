@@ -10,7 +10,7 @@ export const registerRequirement = async (req: any, res: Response) => {
         minimumAmount,
         maximumAmount,
         frequency,
-        totalOrders=0,
+        totalOrders = 0,
         expectedDeliveryDate,
         expectedStartDate,
         expectedEndDate,
@@ -60,8 +60,10 @@ export const registerRequirement = async (req: any, res: Response) => {
 export const requirementByUserId = async (req: any, res: Response) => {
     try {
         const userId = req.userId;
-        const requirements = await Requirement.find({ buyerId: userId }).populate("productId")
-        res.status(201).json({
+        const requirements = await Requirement.find({ buyerId: userId }).populate({
+            path: 'productId',
+            select: 'name category subCategory image'
+        }).exec(); res.status(201).json({
             requirement: requirements
         });
     } catch (error) {
@@ -72,7 +74,7 @@ export const requirementByUserId = async (req: any, res: Response) => {
 // only admin can access it
 export const getRequirements = async (req: Request, res: Response) => {
     const { page = 1, limit = 100 } = req.query;
-    
+
     try {
         const result = await paginate(Requirement, { page: +page, limit: +limit });
 
