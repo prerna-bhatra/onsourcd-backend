@@ -10,7 +10,7 @@ export const registerRequirement = async (req: any, res: Response) => {
         minimumAmount,
         maximumAmount,
         frequency,
-        totalOrders,
+        totalOrders=0,
         expectedDeliveryDate,
         expectedStartDate,
         expectedEndDate,
@@ -60,7 +60,7 @@ export const registerRequirement = async (req: any, res: Response) => {
 export const requirementByUserId = async (req: any, res: Response) => {
     try {
         const userId = req.userId;
-        const requirements = await Requirement.find({ buyerId: userId })
+        const requirements = await Requirement.find({ buyerId: userId }).populate("productId")
         res.status(201).json({
             requirement: requirements
         });
