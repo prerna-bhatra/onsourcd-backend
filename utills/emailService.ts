@@ -27,7 +27,7 @@ export const sendVerificationEmail = async (token:string , email:string) => {
     html: `
       <h1>Email Verification</h1>
       <p>Please verify your email by clicking the link below:</p>
-      <a href="http://localhost:3000/customer/verified?token=${token}">Verify Email</a>
+      <a href="http://localhost:3000/verified?token=${token}">Verify Email</a>
     `,
   };
 
