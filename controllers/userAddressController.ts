@@ -28,14 +28,19 @@ export const addUserAddress = async (req: Request, res: Response) => {
 export const getUserAddressByUserId = async (req: Request, res: Response) => {
     const { userId } = req.query;
 
+    console.log({ userId });
+
     try {
-        const addresses = await UserAddress.find({ userId })
+        const addresses = await UserAddress.find({ userId: userId })
+
+        console.log({addresses});
+        
 
         if (addresses) {
-            res.status(201).json([]);
+            res.status(201).json(addresses);
         }
         else {
-            res.status(201).json(addresses);
+            res.status(201).json([]);
 
         }
 

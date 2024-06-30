@@ -4,7 +4,7 @@ import { addUserAddress, getUserAddressByUserId } from '../controllers/userAddre
 const router = express.Router();
 
 router.post('/', addUserAddress);
-router.post('/', getUserAddressByUserId);
+router.get('/', getUserAddressByUserId);
 
 
 export default router;
