@@ -26,6 +26,7 @@ interface Requirement extends Document {
     deliveryCity: string;
     deliveryState: string;
     deliveryZipCode: string;
+    status:string;
 }
 
 const FrequencyEnum = ['Daily', 'Weekly', 'Monthly', 'One-time'];
@@ -47,7 +48,8 @@ const RequirementSchema: Schema = new Schema({
     longitude: { type: Number, required: true },
     deliveryCity: { type: String, required: true },
     deliveryState: { type: String, required: true },
-    deliveryZipCode: { type: String, required: true }
+    deliveryZipCode: { type: String, required: true },
+    status: { type: String, enum: ['closed', 'open'], default: 'open' },
 });
 
 const Requirement = model<Requirement>('Requirement', RequirementSchema);

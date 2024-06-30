@@ -76,7 +76,10 @@ export const getRequirements = async (req: Request, res: Response) => {
     const { page = 1, limit = 100 } = req.query;
 
     try {
-        const result = await paginate(Requirement, { page: +page, limit: +limit });
+        const result = await Requirement.find().populate({
+            path: 'productId',
+            select: 'name category subCategory image'
+        }).exec();
 
         res.status(200).json(result);
     } catch (error) {

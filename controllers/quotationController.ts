@@ -106,6 +106,14 @@ export const updateQuotationStatus = async (req: Request, res: Response) => {
 
         console.log({ rejectQuotation });
 
+        // also set closed status for that requirement
+        const closeRequirement = await Quotation.updateOne({
+            _id: quotation?.requirementId,
+        }, {
+            status: "closed"
+        });
+
+
 
         if (!quotation) {
             return res.status(404).send();
