@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 import Company from '../models/companyModel';
+import { Types } from 'mongoose';
 
 
 export const registerCompany = async (req: any, res: Response) => {
-    
     const {
-        companyAddresss,
+        companyAddress,
         companyName,
         gstNumber,
         latitude,
@@ -16,37 +16,28 @@ export const registerCompany = async (req: any, res: Response) => {
 
     const userId = req.userId;
 
-
-    console.log({
-        userId,
-        companyAddresss,
-        companyName,
-        gst:gstNumber,
-        latitude,
-        longitude,
-        googleAddress,
-        occupation
-    });
-
     try {
+        // Check if a company already exists for the user
+        const existingCompany = await Company.findOne({ userId });
+
+        // If a company is found, delete it
+        if (existingCompany) {
+            await Company.deleteOne({ userId });
+        }
+
+        // Create a new company
         const company = await Company.create({
-            // userId,
-            companyAddresss,
+            userId,
+            companyAddresss:companyAddress,
             companyName,
-            gst:gstNumber,
+            gst: gstNumber,
             latitude,
             longitude,
             googleAddress,
-            occupation
+            Occupation:occupation
         });
 
-        if (company) {
-            res.status(201).json({
-                company
-            });
-        } else {
-            res.status(400).json({ message: 'Invalid Category data' });
-        }
+        res.status(201).json({ company });
     } catch (error) {
         res.status(500).json({ message: 'Server error', error });
     }
@@ -54,8 +45,12 @@ export const registerCompany = async (req: any, res: Response) => {
 
 export const CompanybyUser = async (req: any, res: Response) => {
     const userId = req.userId;
+    console.log({userId});
+    
+    const userObjectId = new Types.ObjectId(userId);
+
     try {
-        const company = await Company.findOne({ userId });
+        const company = await Company.findOne({ userId:userObjectId });
 
         res.status(201).json({
             company
