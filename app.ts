@@ -6,6 +6,7 @@ import userAddressRoutes from './routes/userAddressRoutes';
 import productRoutes from './routes/productRoutes';
 import requirmentRoutes from './routes/requirmentRoutes';
 import quotationRoutes from './routes/quotationRoutes';
+import companyRoutes from './routes/companyRoutes';
 
 
 
@@ -26,6 +27,7 @@ app.use('/api/address', userAddressRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/requirments', requirmentRoutes);
 app.use('/api/quotation', quotationRoutes);
+app.use('/api/company', companyRoutes);
 
 
 
