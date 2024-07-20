@@ -29,8 +29,6 @@ app.use('/api/requirments', requirmentRoutes);
 app.use('/api/quotation', quotationRoutes);
 app.use('/api/company', companyRoutes);
 
-
-
 // sendVerificationEmail("","")
 
 mongoose.connect("mongodb+srv://alok1993:cV7GOXVnzuYmrEWf@cluster0.kzdim.mongodb.net/onsourcd", {})

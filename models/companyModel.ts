@@ -1,7 +1,7 @@
-import { Schema, model, Document } from 'mongoose';
+import { Document, Schema, model, Types } from 'mongoose';
 
 interface Icompany extends Document {
-    userId: any;
+    userId: Types.ObjectId;
     companyName: string;
     companyAddresss: string;
     gst: number;
@@ -12,7 +12,7 @@ interface Icompany extends Document {
 }
 
 const companySchema = new Schema<Icompany>({
-    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true , unique:true},
+    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true, unique: true },
     companyName: { type: String, required: true },
     companyAddresss: { type: String, required: true },
     gst: { type: Number, required: true },
@@ -24,6 +24,6 @@ const companySchema = new Schema<Icompany>({
     timestamps: true,
 });
 
-const Category = model<Icompany>('Company', companySchema);
+const Company = model<Icompany>('Company', companySchema);
 
-export default Category;
+export default Company;
