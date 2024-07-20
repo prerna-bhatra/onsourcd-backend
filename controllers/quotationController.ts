@@ -1,32 +1,49 @@
 // controllers/quotationController.ts
 import { Request, Response } from 'express';
 import Quotation from '../models/quotationMode';
+import Requirement from '../models/requirmentModel';
+import { Types } from 'mongoose';
+
 
 // Add new Quotation
 export const addQuotation = async (req: any, res: Response) => {
     try {
         const userId = req.userId;
 
+        const { requirementId } = req.params;
+
         const {
-            requirementId,
             estimatedPrice,
             gst,
             qualityDescription,
             transportAvailability
         } = req.body;
 
-        const quotation = new Quotation({
-            requirementId,
+        const newRequirementId = new Types.ObjectId(requirementId);
+
+        const filter = {
+            requirementId: newRequirementId,
+            sellerId: new Types.ObjectId(userId)
+        };
+
+        const update = {
             estimatedPrice,
-            sellerId: userId,
             gst,
             qualityDescription,
             transportAvailability
-        });
-        await quotation.save();
-        res.status(201).send(quotation);
+        };
+
+        const options = {
+            new: true, // Return the updated document
+            upsert: true // Create a new document if none exists
+        };
+
+        const saveQuotation = await Quotation.findOneAndUpdate(filter, update, options);
+
+        res.status(201).send(saveQuotation);
     } catch (error) {
-        res.status(400).send(error);
+
+        res.status(505).send(error);
     }
 };
 
@@ -34,6 +51,19 @@ export const addQuotation = async (req: any, res: Response) => {
 export const getQuotationsByRequirementId = async (req: Request, res: Response) => {
     try {
         const quotations = await Quotation.find({ requirementId: req.params.requirementId });
+        if (!quotations) {
+            return res.status(404).send();
+        }
+        res.send(quotations);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+};
+
+export const getQuotationsByRequirementIdAndUserID = async (req: any, res: Response) => {
+    try {
+        const userId = req.userId
+        const quotations = await Quotation.find({ requirementId: req.params.requirementId, sellerId: userId });
         if (!quotations) {
             return res.status(404).send();
         }
@@ -93,21 +123,14 @@ export const updateQuotationStatus = async (req: Request, res: Response) => {
             { status: "accepted" },
             { new: true, runValidators: true }
         );
-
-        console.log({ quotation })
-
         const rejectQuotation = await Quotation.updateMany({
             requirementId: quotation?.requirementId,
             _id: { $ne: id } // Exclude the current quotation
         }, {
             status: "rejected"
         });
-
-
-        console.log({ rejectQuotation });
-
         // also set closed status for that requirement
-        const closeRequirement = await Quotation.updateOne({
+        const closeRequirement = await Requirement.updateOne({
             _id: quotation?.requirementId,
         }, {
             status: "closed"

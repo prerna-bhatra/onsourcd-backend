@@ -16,9 +16,9 @@ const quotationSchema = new Schema<IQuotation>({
     requirementId: { type: Schema.Types.ObjectId, ref: 'Requirement', required: true },
     estimatedPrice: { type: Number, required: true },
     sellerId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    gst: { type: Boolean, required: true  },
-    transportAvailability: { type: Boolean, required: true },
-    qualityDescription: { type: String, required: true },
+    gst: { type: Boolean, required: true  ,default:false  },
+    transportAvailability: { type: Boolean, required: true , default:false },
+    qualityDescription: { type: String, required: true  },
     status: { type: String, enum: ['rejected', 'accepted', 'pending'], default: 'pending' },
 }, {
     timestamps: true,
