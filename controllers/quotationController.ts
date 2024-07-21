@@ -269,3 +269,33 @@ export const getOrdersByRequirement = async (req: any, res: any) => {
         return null;
     }
 }
+
+
+export const getOrdersByQuotation = async (req: any, res: any) => {
+    try {
+        const { id } = req.params
+        const orders = await Order.find({ quotationId: new Types.ObjectId(id) });
+        res.status(201).send(orders);
+        return orders;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+
+export const getAllOrders = async (req: any, res: any) => {
+    console.log("GET ALL ORDERS");
+    try {
+        const orders = await Order.find().
+        populate('sellerId', 'name email phone')
+        .populate('buyerId', 'name email phone')
+        .populate('productId', 'name  image');
+        // console.log({ orders });
+        res.status(200).send(orders);
+        return orders;
+    } catch (error) {
+        console.error("error in all order",{error});
+        return null;
+    }
+}
+

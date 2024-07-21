@@ -8,7 +8,9 @@ import {
     getAllQuotations,
     getQuotationsByRequirementIdAndUserID,
     updateQuotationStatus,
-    getOrdersByRequirement
+    getOrdersByRequirement,
+    getAllOrders,
+    getOrdersByQuotation
 } from '../controllers/quotationController';
 import { verifyTokenMiddleware } from '../middlewares/authMiddleware';
 
@@ -23,6 +25,8 @@ router.get('/', getAllQuotations);
 
 router.get('/accept-order/:id', verifyTokenMiddleware ,updateQuotationStatus);
 router.get('/requirement-orders/:id', verifyTokenMiddleware ,getOrdersByRequirement);
+// router.get('/quotation-orders/:id',verifyTokenMiddleware ,getOrdersByQuotation);
+router.get('/admin/orders',getAllOrders);
 
 
 export default router;
