@@ -156,7 +156,7 @@ export const updateQuotationStatus = async (req: Request, res: Response) => {
             requirement?.totalOrders,
             quotationData.estimatedPrice,
             quotationData?._id,
-            id,
+            quotationData?.requirementId,
             requirement?.expectedStartDate,
             requirement?.expectedEndDate,
             requirement?.frequency,
