@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import Requirement from '../models/requirmentModel';
 import { paginate } from '../utills/paginate';
+import Quotation from '../models/quotationMode';
 
 export const registerRequirement = async (req: any, res: Response) => {
     const userId = req.userId; // Assuming userId is retrieved from authentication middleware
@@ -72,16 +73,36 @@ export const requirementByUserId = async (req: any, res: Response) => {
 }
 
 // only admin can access it
-export const getRequirements = async (req: Request, res: Response) => {
+export const getRequirements = async (req: any, res: Response) => {
     const { page = 1, limit = 100 } = req.query;
+    const pageNumber = parseInt(page as string);
+    const limitNumber = parseInt(limit as string);
+    const userId = req.userId; // Assuming userId is retrieved from authentication middleware
+
+
 
     try {
-        const result = await Requirement.find().populate({
-            path: 'productId',
-            select: 'name category subCategory image'
-        }).exec();
+        const requirements = await Requirement.find()
+            .populate({
+                path: 'productId',
+                select: 'name category subCategory image',
+            })
+            .skip((pageNumber - 1) * limitNumber)
+            .limit(limitNumber)
+            .lean();
 
-        res.status(200).json(result);
+        const requirementIds = requirements.map(requirement => requirement._id.toString());
+
+        const quotations = await Quotation.find({
+            requirementId: { $in: requirementIds }, sellerId: userId
+        }).lean();
+
+        const requirementsWithQuotations = requirements.map(requirement => {
+            const requirementQuotations = quotations.filter(quotation => quotation.requirementId.toString() === requirement._id.toString());
+            return { ...requirement, quotations: requirementQuotations };
+        });
+
+        res.status(200).json(requirementsWithQuotations);
     } catch (error) {
         res.status(500).json({ message: 'Server error', error });
     }

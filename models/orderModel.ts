@@ -16,6 +16,7 @@ interface IOrder extends Document {
     expectedStartDate: Date;
     expectedEndDate: Date;
     frequency: string;
+    paymentProgress: string;
 }
 
 // Order Schema
@@ -33,6 +34,8 @@ const ordersSchema = new Schema<IOrder>({
     expectedStartDate: { type: Date, required: true },
     expectedEndDate: { type: Date, required: true },
     frequency: { type: String, required: true },
+    paymentProgress: { type: String, enum: ['in-transit', 'received'], default: 'in-transit' },
+
 }, {
     timestamps: true,
 });
