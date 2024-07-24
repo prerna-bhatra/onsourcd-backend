@@ -9,6 +9,7 @@ interface IQuotation extends Document {
     transportAvailability: boolean;
     qualityDescription: string;
     status: 'rejected' | 'accepted' | 'pending';
+    transportationPrice:number;
 }
 
 // Quotation Schema
@@ -18,6 +19,7 @@ const quotationSchema = new Schema<IQuotation>({
     sellerId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     gst: { type: Boolean, required: true  ,default:false  },
     transportAvailability: { type: Boolean, required: true , default:false },
+    transportationPrice: { type: Number, required: true },
     qualityDescription: { type: String, required: true  },
     status: { type: String, enum: ['rejected', 'accepted', 'pending'], default: 'pending' },
 }, {

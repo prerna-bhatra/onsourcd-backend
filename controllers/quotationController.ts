@@ -17,7 +17,8 @@ export const addQuotation = async (req: any, res: Response) => {
             estimatedPrice,
             gst,
             qualityDescription,
-            transportAvailability
+            transportAvailability,
+            transportationPrice
         } = req.body;
 
         const newRequirementId = new Types.ObjectId(requirementId);
@@ -31,7 +32,8 @@ export const addQuotation = async (req: any, res: Response) => {
             estimatedPrice,
             gst,
             qualityDescription,
-            transportAvailability
+            transportAvailability,
+            transportationPrice
         };
 
         const options = {
@@ -284,17 +286,16 @@ export const getOrdersByQuotation = async (req: any, res: any) => {
 }
 
 export const getAllOrders = async (req: any, res: any) => {
-    console.log("GET ALL ORDERS");
     try {
         const orders = await Order.find().
-        populate('sellerId', 'name email phone')
-        .populate('buyerId', 'name email phone')
-        .populate('productId', 'name  image');
+            populate('sellerId', 'name email phone')
+            .populate('buyerId', 'name email phone')
+            .populate('productId', 'name  image');
         // console.log({ orders });
         res.status(200).send(orders);
         return orders;
     } catch (error) {
-        console.error("error in all order",{error});
+        console.error("error in all order", { error });
         return null;
     }
 }
