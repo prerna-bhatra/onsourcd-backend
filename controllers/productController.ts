@@ -127,6 +127,8 @@ export const addProduct = async (req: Request, res: Response) => {
             const category = fields.categoryId[0];
             const subCategory = fields.subcategoryId[0];
 
+            const commission = fields.commission[0]
+
             const gst = fields.gst[0];
 
             if (files.document) {
@@ -138,7 +140,8 @@ export const addProduct = async (req: Request, res: Response) => {
                         name,
                         category,
                         subCategory,
-                        gst
+                        gst,
+                        commission
                     })
 
                     const saveProduct = await newProduct.save()
