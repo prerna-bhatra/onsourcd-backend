@@ -10,7 +10,7 @@ export const registerUser = async (req: Request, res: Response) => {
     const { name, email, phone, password, userType } = req.body;
 
     try {
-        const userExists = await User.findOne({ email  });
+        const userExists = await User.findOne({ email });
 
         if (userExists) {
             return res.status(400).json({ message: 'User already exists' });
@@ -121,3 +121,28 @@ export const verifyUserEmail = async (req: any, res: Response) => {
         throw error
     }
 }
+
+
+export const sellerList = async (req: Request, res: Response) => {
+    try {
+        const users = await User.find({ userType: 'seller' });
+        res.status(200).json(users);
+
+    } catch (error) {
+        console.log({ error });
+
+        res.status(500).json({ message: 'Server error', error });
+    }
+};
+
+export const buyerList = async (req: Request, res: Response) => {
+    try {
+        const users = await User.find({ userType: 'buyer' });
+        res.status(200).json(users);
+
+    } catch (error) {
+        console.log({ error });
+
+        res.status(500).json({ message: 'Server error', error });
+    }
+};
