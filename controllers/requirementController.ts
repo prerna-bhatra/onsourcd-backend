@@ -78,9 +78,6 @@ export const getRequirements = async (req: any, res: Response) => {
     const pageNumber = parseInt(page as string);
     const limitNumber = parseInt(limit as string);
     const userId = req.userId; // Assuming userId is retrieved from authentication middleware
-
-
-
     try {
         const requirements = await Requirement.find()
             .populate({

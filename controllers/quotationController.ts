@@ -300,3 +300,77 @@ export const getAllOrders = async (req: any, res: any) => {
     }
 }
 
+export const getOrdersBySeller = async (req: Request, res: Response) => {
+    try {
+        const { sellerId } = req.params;
+
+        console.log({ sellerId });
+
+        const orders = await Order.find({
+            sellerId: new Types.ObjectId(sellerId),
+            paymentProgress: 'received'
+        }).populate({
+            path: 'productId',
+            select: 'name image'
+        });;
+
+        console.log({ orders });
+
+        res.status(200).send(orders);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+export const updateOrderPaymentProgress = async (req: Request, res: Response) => {
+    try {
+        const { orderId } = req.params;
+        console.log({ body: req.body });
+
+        const updatedOrder = await Order.findByIdAndUpdate(
+            orderId,
+            { paymentProgress: 'received' },
+            { new: true }
+        );
+
+        if (!updatedOrder) {
+            res.status(404).send('Order not found');
+            return;
+        }
+
+        res.status(200).send(updatedOrder);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+
+export const updateOrderStatus = async (req: Request, res: Response) => {
+    try {
+        const { orderId } = req.params;
+
+        console.log({ body: req.body });
+
+        const { status } = req.body;
+
+        // either status dispatched , deleivered , received  
+
+        const updatedOrder = await Order.findByIdAndUpdate(
+            orderId,
+            { status: status },
+            { new: true } // This option returns the updated document
+        );
+
+        if (!updatedOrder) {
+            res.status(404).send('Order not found');
+            return;
+        }
+
+        res.status(200).send(updatedOrder);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+};
