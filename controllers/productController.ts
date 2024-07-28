@@ -169,7 +169,7 @@ export const getProducts = async (req: Request, res: Response) => {
             .populate('subCategory');  // Populating subCategory name
 
         res.status(200).json({
-            message: 'Product Saved',
+            message: 'Product Fetched',
             products
         });
 

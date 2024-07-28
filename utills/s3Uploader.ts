@@ -20,6 +20,12 @@ const s3 = new AWS.S3();
 const uploadFileToS3 = (file: any): Promise<string> => {
   console.log({ file, bcueckt: process.env.BUCKET_NAME });
 
+  console.log({accessKeyId: process.env.ACCESS_KEY_ID,
+    secretAccessKey: process.env.SECRET_ACCESS_KEY,
+    region: process.env.REGION});
+  
+
+  
   const fileName = file.originalFilename;
   const mimeType = file.type;
   const fileStream = fs.createReadStream(file.filepath);

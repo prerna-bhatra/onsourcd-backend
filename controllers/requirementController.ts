@@ -59,8 +59,12 @@ export const registerRequirement = async (req: any, res: Response) => {
 
 
 export const requirementByUserId = async (req: any, res: Response) => {
+    console.log("requirementByUserId");
+    
     try {
         const userId = req.userId;
+        console.log({userId});
+        
         const requirements = await Requirement.find({ buyerId: userId }).populate({
             path: 'productId',
             select: 'name category subCategory image'
