@@ -288,9 +288,14 @@ export const getOrdersByQuotation = async (req: any, res: any) => {
 export const getAllOrders = async (req: any, res: any) => {
     try {
         const orders = await Order.find().
-            populate('sellerId', 'name email phone')
+            populate('sellerId', 'name email phone ')
             .populate('buyerId', 'name email phone')
-            .populate('productId', 'name  image');
+            .populate('productId', 'name  image')
+            .populate('requirementId', 'deliveryAddress  deliveryCity deliveryState  deliveryZipCode');
+
+            console.log({orders});
+            
+
         // console.log({ orders });
         res.status(200).send(orders);
         return orders;
@@ -369,6 +374,32 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
         }
 
         res.status(200).send(updatedOrder);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+
+export const getOrdersByBuyer = async (req: Request, res: Response) => {
+    try {
+        console.log("getOrdersByBuyer");
+
+        const { buyerId } = req.params;
+
+        console.log({ buyerId });
+
+        const orders = await Order.find({
+            buyerId: new Types.ObjectId(buyerId),
+            // paymentProgress: 'received'
+        }).populate({
+            path: 'productId',
+            select: 'name image'
+        });;
+
+        console.log({ orders });
+
+        res.status(200).send(orders);
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');

@@ -13,7 +13,8 @@ import {
     getOrdersByQuotation,
     getOrdersBySeller,
     updateOrderStatus,
-    updateOrderPaymentProgress
+    updateOrderPaymentProgress,
+    getOrdersByBuyer
 } from '../controllers/quotationController';
 import { verifyTokenMiddleware } from '../middlewares/authMiddleware';
 
@@ -27,6 +28,8 @@ router.get('/:id', verifyTokenMiddleware, getQuotationById);
 router.get('/', getAllQuotations);
 
 router.get('/seller/orders/:sellerId', getOrdersBySeller);
+router.get('/buyer/orders/:buyerId', getOrdersByBuyer);
+
 
 router.get('/accept-order/:id', verifyTokenMiddleware, updateQuotationStatus);
 router.get('/requirement-orders/:id', verifyTokenMiddleware, getOrdersByRequirement);
@@ -34,6 +37,9 @@ router.get('/requirement-orders/:id', verifyTokenMiddleware, getOrdersByRequirem
 router.get('/admin/orders', getAllOrders);
 router.post('/update/order-status/:orderId', updateOrderStatus);
 router.get('/update/order-payment/:orderId', updateOrderPaymentProgress);
+
+
+router.get('/', getAllQuotations);
 
 
 
