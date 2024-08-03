@@ -414,19 +414,19 @@ export const getOrdersDashboard = async (req: Request, res: Response) => {
     try {
         console.log("getOrdersDashboard");
 
-        const Pendingorders = await Order.find({ status: "pending" })
+        const pendingorders = await Order.find({ status: "pending" })
 
-        const CompletedOrders = await Order.find({ status: "completed" })
+        const completedOrders = await Order.find({ status: "completed" })
 
-        const QuotationPending = await Order.find({ status: "pending" })
+        const quotationPending = await Order.find({ status: "pending" })
 
-        const QuotationAccepted = await Order.find({ status: "accepted" })
+        const quotationAccepted = await Order.find({ status: "accepted" })
 
         res.status(200).send({
-            QuotationAccepted,
-            QuotationPending,
-            CompletedOrders,
-            Pendingorders
+            pendingorders,
+            quotationPending,
+            completedOrders,
+            quotationAccepted
         });
     } catch (error) {
         console.error(error);
@@ -441,18 +441,20 @@ export const getOrdersDashboardForSellers = async (req: any, res: Response) => {
 
         const userId = req.userId;
 
-        const Pendingorders = await Order.find({ status: "pending", sellerId: new Types.ObjectId(userId) })
+        const pendingorders = await Order.find({ status: "pending", sellerId: new Types.ObjectId(userId) })
 
-        const CompletedOrders = await Order.find({ status: "completed" })
+        const completedOrders = await Order.find({ status: "completed" })
 
-        const QuotationPending = await Order.find({ status: "pending" })
+        const quotationPending = await Order.find({ status: "pending" })
 
-        const QuotationAccepted = await Order.find({ status: "accepted" })
+        const quotationAccepted = await Order.find({ status: "accepted" })
 
-
-        // console.log({ orders });
-
-        // res.status(200).send(orders);
+        res.status(200).send({
+            pendingorders,
+            completedOrders,
+            quotationPending,
+            quotationAccepted
+        });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
