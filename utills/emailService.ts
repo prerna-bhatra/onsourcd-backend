@@ -41,4 +41,23 @@ export const sendVerificationEmail = async (token:string , email:string) => {
   }
 };
 
+
+export const sendResetPasswodOtp = async (otp:number , email:string) => {
+  const mailOptions = {
+    from: "bhatraprerna061@gmail.com",
+  to: email,
+    subject: 'Password Reset ',
+    html: `Use the code ${otp} to create new password  `,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    // console.log('Verification email sent successfully');
+    return true;
+  } catch (error) {
+    return false
+    console.error('Error sending verification email:', error);
+  }
+};
+
 // sendVerificationEmail("hi","")

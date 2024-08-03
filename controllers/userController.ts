@@ -3,7 +3,8 @@ import User from '../models/userModel';
 import bcrypt from 'bcryptjs';
 // import generateToken from '../utils/generateToken';
 import jwt from 'jsonwebtoken';
-import { sendVerificationEmail } from '../utills/emailService';
+import { sendResetPasswodOtp, sendVerificationEmail } from '../utills/emailService';
+import Otp from '../models/Otp';
 
 
 export const registerUser = async (req: Request, res: Response) => {
@@ -122,6 +123,87 @@ export const verifyUserEmail = async (req: any, res: Response) => {
     }
 }
 
+export const sendOtp = async (req: Request, res: Response) => {
+    try {
+        const { email } = req.body;
+        const userExists = await User.findOne({ email });
+        if (!userExists) {
+            return res.status(400).json({ message: 'User not found' });
+        }
+        const generatedOtp = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+        const existingOtp = await Otp.findOne({ email });
+        if (existingOtp) {
+            existingOtp.otp = generatedOtp;
+            await existingOtp.save();
+        } else {
+            const newOtp = new Otp({
+                email,
+                otp: generatedOtp
+            });
+            await newOtp.save();
+        }
+        const sendEmail = await sendResetPasswodOtp(generatedOtp, email);
+        if (sendEmail) {
+            res.status(200).json({ message: 'OTP has been sent' });
+        }
+        else {
+            res.status(401).json({ message: 'OTP send failed' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+export const verifyOtp = async (req: Request, res: Response) => {
+    try {
+        const { email, otp } = req.body;
+        const savedOtp: any = await Otp.findOne({ email })
+        console.log({ savedOtp });
+
+        if (savedOtp?.otp === parseInt(otp)) {
+            res.status(200).json({ message: 'OTP verified succefully' });
+        }
+        else {
+            res.status(401).json({ message: 'OTP not matched' });
+
+        }
+
+
+    } catch (error) {
+        console.log({ error });
+
+    }
+}
+
+export const resetPassword = async (req: Request, res: Response) => {
+    try {
+        const { password, email } = req.body;
+
+        if (!password || !email) {
+            return res.status(400).json({ message: 'Password and email are required' });
+        }
+        // Find the user by email
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Hash the new password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        // Update the user's password
+        user.password = hashedPassword;
+        await user.save();
+
+        return res.status(200).json({ message: 'Password updated successfully' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
 
 export const sellerList = async (req: Request, res: Response) => {
     try {
