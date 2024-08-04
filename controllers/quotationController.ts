@@ -414,19 +414,23 @@ export const getOrdersDashboard = async (req: Request, res: Response) => {
     try {
         console.log("getOrdersDashboard");
 
-        const pendingorders = await Order.find({ status: "pending" })
+        const pendingorders = await Order.countDocuments({ status: "pending" })
 
-        const completedOrders = await Order.find({ status: "completed" })
+        const completedOrders = await Order.countDocuments({ status: "delivered" })
 
-        const quotationPending = await Order.find({ status: "pending" })
+        const quotationPending = await Quotation.countDocuments({ status: "pending" })
 
-        const quotationAccepted = await Order.find({ status: "accepted" })
+        const quotationAccepted = await Quotation.countDocuments({ status: "accepted" })
+
+        const quotationRejected = await Quotation.countDocuments({ status: "rejected" })
+
 
         res.status(200).send({
             pendingorders,
             quotationPending,
             completedOrders,
-            quotationAccepted
+            quotationAccepted,
+            quotationRejected
         });
     } catch (error) {
         console.error(error);
@@ -445,9 +449,9 @@ export const getOrdersDashboardForSellers = async (req: any, res: Response) => {
 
         const completedOrders = await Order.find({ status: "completed" })
 
-        const quotationPending = await Order.find({ status: "pending" })
+        const quotationPending = await Quotation.find({ status: "pending" })
 
-        const quotationAccepted = await Order.find({ status: "accepted" })
+        const quotationAccepted = await Quotation.find({ status: "rejected" })
 
         res.status(200).send({
             pendingorders,
