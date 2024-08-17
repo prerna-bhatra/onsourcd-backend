@@ -33,6 +33,40 @@ export const registerCategory = async (req: Request, res: Response) => {
     }
 };
 
+export const deleteCategory = async (req: Request, res: Response): Promise<Response> => {
+    try {
+        const { id } = req.params;
+        const deletedCategory = await Category.findByIdAndDelete(id);
+
+        if (!deletedCategory) {
+            return res.status(404).json({ message: 'Category not found' });
+        }
+
+        return res.status(200).json({ message: 'Category deleted successfully', category: deletedCategory });
+    } catch (error) {
+        return res.status(500).json({ message: 'An error occurred while deleting the category', error });
+    }
+};
+
+export const deleteSubCategory = async (req: Request, res: Response): Promise<Response> => {
+    try {
+        const { id } = req.params;
+
+        // Find the subcategory by ID and delete it
+        const deletedSubCategory = await SubCategory.findByIdAndDelete(id);
+
+        // If the subcategory is not found, return a 404 response
+        if (!deletedSubCategory) {
+            return res.status(404).json({ message: 'SubCategory not found' });
+        }
+
+        // Return a success response with the deleted subcategory
+        return res.status(200).json({ message: 'SubCategory deleted successfully', subCategory: deletedSubCategory });
+    } catch (error) {
+        // Return an error response in case of failure
+        return res.status(500).json({ message: 'An error occurred while deleting the subcategory', error });
+    }
+};
 
 export const fetchCategories = async (req: Request, res: Response) => {
     const { name } = req.body;
@@ -64,7 +98,7 @@ export const registerSubCategory = async (req: Request, res: Response) => {
     console.log({ categoryId });
 
     try {
-        const subCategoryExists = await SubCategory.findOne({ name, category: new Types.ObjectId( categoryId) });
+        const subCategoryExists = await SubCategory.findOne({ name, category: new Types.ObjectId(categoryId) });
 
         if (subCategoryExists) {
             return res.status(400).json({ message: 'Sub category  can not be created duplicate' });

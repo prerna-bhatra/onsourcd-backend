@@ -7,7 +7,7 @@ interface IProduct extends Document {
     subCategory: Types.ObjectId;
     image: string;
     commission: number;
-
+    description: string
 }
 
 const productSchema = new Schema<IProduct>({
@@ -15,10 +15,9 @@ const productSchema = new Schema<IProduct>({
     category: { type: Schema.Types.ObjectId, ref: 'Category', required: true },
     subCategory: { type: Schema.Types.ObjectId, ref: 'SubCategory', required: true },
     commission: { type: Number, required: false, default: 0 },
+    description: { type: String },
     gst: { type: Number, required: true },
     image: { type: String }
-
-
 }, {
     timestamps: true,
 });

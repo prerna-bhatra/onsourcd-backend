@@ -37,7 +37,7 @@ const RequirementSchema: Schema = new Schema({
     quantity: { type: Number, required: true },
     minimumAmount: { type: Number, required: true },
     maximumAmount: { type: Number, required: true },
-    frequency: { type: String, enum: FrequencyEnum, required: true },
+    frequency: { type: String, required: true },
     totalOrders: { type: Number, required: true },
     expectedDeliveryDate: { type: Date },
     expectedStartDate: { type: Date },
