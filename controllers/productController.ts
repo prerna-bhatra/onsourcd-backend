@@ -4,7 +4,7 @@ import SubCategory from '../models/subCategoryModel';
 import Product from '../models/productModel';
 import uploadFileToS3 from "../utills/s3Uploader"
 import * as formidable from 'formidable';
-
+import { Types } from 'mongoose';
 
 
 export const registerCategory = async (req: Request, res: Response) => {
@@ -60,10 +60,11 @@ export const fetchCategories = async (req: Request, res: Response) => {
 
 
 export const registerSubCategory = async (req: Request, res: Response) => {
-    const { name, category } = req.body;
+    const { name, categoryId } = req.body;
+    console.log({ categoryId });
 
     try {
-        const subCategoryExists = await SubCategory.findOne({ name, category: category });
+        const subCategoryExists = await SubCategory.findOne({ name, category: new Types.ObjectId( categoryId) });
 
         if (subCategoryExists) {
             return res.status(400).json({ message: 'Sub category  can not be created duplicate' });
@@ -71,7 +72,7 @@ export const registerSubCategory = async (req: Request, res: Response) => {
 
         const newSubCategory = new SubCategory({
             name,
-            category: category
+            category: categoryId
         })
 
         const saveNewSubcategory = await newSubCategory.save();

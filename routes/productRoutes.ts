@@ -12,6 +12,8 @@ router.post('/', addProduct);
 router.get('/', getProducts);
 
 router.get('/delete/:productID', deleteProduct);
+router.post('/category', registerCategory);
+router.post('/sub-category', registerSubCategory);
 
 
 
