@@ -441,23 +441,22 @@ export const getOrdersDashboard = async (req: Request, res: Response) => {
 
 export const getOrdersDashboardForSellers = async (req: any, res: Response) => {
     try {
-        console.log("getOrdersDashboardForSellers");
         const userId = req.userId;
         const { userType } = req.query
         console.log("getOrdersDashboardForSellers", userId, userType);
 
         let pendingorders , completedOrders , quotationPending ,quotationAccepted;
         if (userType === "seller") {
-            pendingorders = await Order.find({ status: "pending", sellerId: new Types.ObjectId(userId) })
-            completedOrders = await Order.find({ status: "delivered",sellerId: new Types.ObjectId(userId) })
-            quotationPending= await Quotation.find({ status: "pending",sellerId: new Types.ObjectId(userId)  })
-            quotationAccepted= await Quotation.find({ status: "rejected",sellerId: new Types.ObjectId(userId)  })
+            pendingorders = await Order.countDocuments({ status: "pending", sellerId: new Types.ObjectId(userId) })
+            completedOrders = await Order.countDocuments({ status: "delivered",sellerId: new Types.ObjectId(userId) })
+            quotationPending= await Quotation.countDocuments({ status: "pending",sellerId: new Types.ObjectId(userId)  })
+            quotationAccepted= await Quotation.countDocuments({ status: "rejected",sellerId: new Types.ObjectId(userId)  })
         }
         else {
-            pendingorders = await Order.find({ status: "pending", sellerId: new Types.ObjectId(userId) })
-            completedOrders = await Order.find({ status: "delivered",sellerId: new Types.ObjectId(userId) })
-            quotationPending= await Quotation.find({ status: "pending",sellerId: new Types.ObjectId(userId)  })
-            quotationAccepted= await Quotation.find({ status: "rejected",sellerId: new Types.ObjectId(userId)  })
+            pendingorders = await Order.countDocuments({ status: "pending", buyerId: new Types.ObjectId(userId) })
+            completedOrders = await Order.countDocuments({ status: "delivered",buyerId: new Types.ObjectId(userId) })
+            quotationPending= await Quotation.countDocuments({ status: "pending",buyerId: new Types.ObjectId(userId)  })
+            quotationAccepted= await Quotation.countDocuments({ status: "rejected",buyerId: new Types.ObjectId(userId)  })
         
         }
 
