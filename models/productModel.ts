@@ -7,7 +7,8 @@ interface IProduct extends Document {
     subCategory: Types.ObjectId;
     image: string;
     commission: number;
-    description: string
+    description: string;
+    isArchive: boolean;
 }
 
 const productSchema = new Schema<IProduct>({
@@ -17,7 +18,8 @@ const productSchema = new Schema<IProduct>({
     commission: { type: Number, required: false, default: 0 },
     description: { type: String },
     gst: { type: Number, required: true },
-    image: { type: String }
+    image: { type: String },
+    isArchive: { type: Boolean, default: false }
 }, {
     timestamps: true,
 });

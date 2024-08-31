@@ -67,7 +67,7 @@ export const loginUser = async (req: Request, res: Response) => {
                 isVerifiedEmail: user.isVerifiedEmail,
                 isVerifiedPhone: user.isVerifiedPhone,
                 userType: user.userType,
-                token: jwt.sign({ userId: user._id, name: user.name }, "secretkey", {
+                token: jwt.sign({ userId: user._id, name: user.name ,userType:user?.userType }, "secretkey", {
                     expiresIn: '30d',
                 }),
             });

@@ -15,7 +15,7 @@ export const verifyTokenMiddleware = (req: any, res: Response, next: NextFunctio
     }
 
     try {
-        const decoded = jwt.verify(token, jwtSecret);
+        const decoded = jwt.verify(token, jwtSecret);        
         req.userId = (decoded as any).userId; // Store user ID in locals
         req.token = token;
         next();
