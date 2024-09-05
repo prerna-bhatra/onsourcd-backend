@@ -13,21 +13,21 @@ dotenv.config();
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: "bhatraprerna061@gmail.com",
-    pass: "rbit mqro fswd xiys",
+    user: "",
+    pass: "",
   },
 });
 
 
 export const sendVerificationEmail = async (token:string , email:string) => {
   const mailOptions = {
-    from: "bhatraprerna061@gmail.com",
+    from: 
   to: email,
     subject: 'Email Verification',
     html: `
       <h1>Email Verification</h1>
       <p>Please verify your email by clicking the link below:</p>
-      <a href="https://onsourcd-frontend-dg28.vercel.app/verified?token=${token}">Verify Email</a>
+      <a>Verify Email</a>
     `,
   };
 
