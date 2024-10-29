@@ -28,6 +28,8 @@ export const addUserAddress = async (req: Request, res: Response) => {
 export const getUserAddressByUserId = async (req: Request, res: Response) => {
     const { userId } = req.query;
 
+    console.log({ userId });
+
     try {
         // Make sure the userId is being correctly passed as a query parameter
         const addresses = await UserAddress.find({ userId });
